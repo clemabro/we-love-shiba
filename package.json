@@ -1,0 +1,20 @@
+{
+  "name": "we-love-shiba",
+  "version": "1.0.0",
+  "description": "C'est vrai que c cool les shibas",
+  "main": "index.js",
+  "scripts": {
+    "start": "we_love_shiba.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/clemabro/we-love-shiba.git"
+  },
+  "author": "Clement AZIBEIRO",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/clemabro/we-love-shiba/issues"
+  },
+  "homepage": "https://github.com/clemabro/we-love-shiba#readme"
+}
