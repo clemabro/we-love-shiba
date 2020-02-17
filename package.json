@@ -18,7 +18,6 @@
   },
   "homepage": "https://github.com/clemabro/we-love-shiba#readme",
   "dependencies": {
-    "js-yaml": "^3.13.1",
-    "twit": "^2.2.5"
+    "twit": "^2.2.11"
   }
 }

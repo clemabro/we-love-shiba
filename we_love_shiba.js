@@ -1,7 +1,5 @@
-const config = require('./config.json');
+var twit = require('twit');
+var config = require('./config.js');
 
-const api_key = config.api_key;
-const api_secret_key = config.api_secret_key;
-const access_token = config.access_token;
-const access_token_secret = config.access_token_secret;
+var twitter = new twit(config);
 
