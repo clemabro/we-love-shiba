@@ -16,11 +16,13 @@ var logger = log4js.getLogger('shiba');
 var twitter = new twit(config);
 
 twitter.get('search/tweets', { q: 'shiba since:2011-07-11', count: 100 }, function(err, data, response) {
-    console.log(data)
-  })
+    logger.debug("Recherche de tweets ...");
+    console.log(data);
+})
 
 // test du job
 var j = schedule.scheduleJob('0 1 * * *', function(){
-  var formatted = dateTime.create().format('Y-m-d H:M:S');
+  var dt = dateTime.create();
+  var formatted = dt.format('Y-m-d H:M:S');
   logger.debug(formatted);
 });
