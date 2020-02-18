@@ -6,10 +6,8 @@ var dateTime = require('node-datetime');
 
 // Configuration du logger
 log4js.configure({
-  appenders: [
-    { type: 'console' },
-    { type: 'file', filename: 'shiba.log', category: 'shiba' }
-  ]
+  appenders: { shiba: { type: 'file', filename: 'shiba.log' } },
+  categories: { default: { appenders: ['shiba'], level: 'error' } }
 });
 
 // Recuperation du logger shiba
