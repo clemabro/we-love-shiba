@@ -2,7 +2,7 @@
   "name": "we-love-shiba",
   "version": "1.0.0",
   "description": "C'est vrai que c cool les shibas",
-  "main": "index.js",
+  "main": "we_love_shiba.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node we_love_shiba.js"
@@ -18,9 +18,9 @@
   },
   "homepage": "https://github.com/clemabro/we-love-shiba#readme",
   "dependencies": {
-    "twit": "^2.2.11",
-    "node-schedule": "^1.3.2",
     "log4js": "^6.1.2",
-    "node-datetime": "^2.1.2"
+    "node-datetime": "^2.1.2",
+    "node-schedule": "^1.3.2",
+    "twit": "^2.2.11"
   }
 }
