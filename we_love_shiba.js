@@ -29,7 +29,7 @@ function start() {
   })
 
   // test du job
-  var j = schedule.scheduleJob('* * * * *', function(){
+  var j = schedule.scheduleJob('* /5 * * *', function(){
     var dt = dateTime.create();
     var formatted = dt.format('Y-m-d H:M:S');
     logger.debug(formatted);
