@@ -33,6 +33,7 @@ function start() {
     var dt = dateTime.create();
     var formatted = dt.format('Y-m-d H:M:S');
     logger.debug(formatted);
+    console.log(formatted);
   });
 
 }
