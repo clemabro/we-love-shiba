@@ -3,26 +3,36 @@ var config = require('./config.js');
 var schedule = require('node-schedule');
 var log4js = require('log4js');
 var dateTime = require('node-datetime');
+var throng = require('throng');
 
-// Configuration du logger
-log4js.configure({
-  appenders: { shiba: { type: 'file', filename: 'shiba.log' } },
-  categories: { default: { appenders: ['shiba'], level: 'debug' } }
-});
+throng({
+  workers: 1,
+  lifetime: Infinity
+}, start);
 
-// Recuperation du logger shiba
-const logger = log4js.getLogger('shiba');
+function start() {
 
-var twitter = new twit(config);
+  // Configuration du logger
+  log4js.configure({
+    appenders: { shiba: { type: 'file', filename: 'shiba.log' } },
+    categories: { default: { appenders: ['shiba'], level: 'debug' } }
+  });
 
-twitter.get('search/tweets', { q: 'shiba since:2011-07-11', count: 100 }, function(err, data, response) {
-    logger.debug("Recherche de tweets ...");
-    console.log(data);
-})
+  // Recuperation du logger shiba
+  const logger = log4js.getLogger('shiba');
 
-// test du job
-var j = schedule.scheduleJob('* * * * *', function(){
-  var dt = dateTime.create();
-  var formatted = dt.format('Y-m-d H:M:S');
-  logger.debug(formatted);
-});
+  var twitter = new twit(config);
+
+  twitter.get('search/tweets', { q: 'shiba since:2011-07-11', count: 1 }, function(err, data, response) {
+      logger.debug("Recherche de tweets ...");
+      console.log(data)
+  })
+
+  // test du job
+  var j = schedule.scheduleJob('* * * * *', function(){
+    var dt = dateTime.create();
+    var formatted = dt.format('Y-m-d H:M:S');
+    logger.debug(formatted);
+  });
+
+}
