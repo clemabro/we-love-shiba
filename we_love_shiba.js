@@ -1,9 +1,11 @@
 var twit = require('twit');
 var config = require('./config.js');
 var schedule = require('node-schedule');
-var log4js = require('log4js');
-var dateTime = require('node-datetime');
 var throng = require('throng');
+
+const search_terms = ['shiba', 'shiba inu', 'shiba chien', 'shiba inu chien', 'chien', 'dog', 'dogs', 'chiens', 'shibas'];
+
+var twitter = new twit(config);
 
 throng({
   workers: 1,
@@ -11,29 +13,54 @@ throng({
 }, start);
 
 function start() {
-
-  // Configuration du logger
-  log4js.configure({
-    appenders: { shiba: { type: 'file', filename: 'shiba.log' } },
-    categories: { default: { appenders: ['shiba'], level: 'debug' } }
-  });
-
-  // Recuperation du logger shiba
-  const logger = log4js.getLogger('shiba');
-
-  var twitter = new twit(config);
-
-  twitter.get('search/tweets', { q: 'shiba since:2011-07-11', count: 1 }, function(err, data, response) {
-      logger.debug("Recherche de tweets ...");
-      console.log(data)
-  })
+  
+  var randomList = getRandom(search_terms);
 
   // test du job
-  var j = schedule.scheduleJob('* /5 * * *', function(){
-    var dt = dateTime.create();
-    var formatted = dt.format('Y-m-d H:M:S');
-    logger.debug(formatted);
-    console.log(formatted);
+  var j = schedule.scheduleJob('*/30 * * * *', function(){
+    findUserByTopic(randomList).then( function(value){
+      addToFollow(value);
+    });
   });
 
+}
+
+function addToFollow(idUser) {
+  console.log('Following ' + idUser);
+  twitter.post('friendships/create', {
+      name: 'test',
+      screen_name: idUser,
+      follow: true
+    })
+    .then(({ data }) => {
+      if (!data.id) {
+        throw data.errors;
+      } else {
+        console.log(`Followed`);
+      }
+    })
+    .catch(console.error);
+}
+
+function findUserByTopic(list) {
+  console.log(`Finding a user tweeting about ${list}...`);
+  return twitter.get('search/tweets', {
+      q: `${list}`,
+      count: 100
+    })
+    .then(({ data }) => {
+      if (!data.statuses) throw data.errors;
+      var idUser = data.statuses.filter((status) => !status.user.following).map((status) => status.user.screen_name).filter(unique);
+      return idUser;
+    })
+    .then(getRandom)
+    .catch(console.error);
+}
+
+function getRandom(arr) {
+  return arr[ Math.floor(arr.length * Math.random()) ];
+}
+
+function unique(value, index, self) { 
+  return self.indexOf(value) === index;
 }
