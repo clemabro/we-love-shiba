@@ -31,12 +31,16 @@ function start() {
       addToFollow(value);
     });
   });
-  
-  var h = schedule.scheduleJob('* 40 8 * * *', function(){
+
+  var h = schedule.scheduleJob('* 30 8 * * *', function(){
     giphy.random(randomGif).then(function (res){
       console.log(res.data.image_mp4_url);
-      postImg(res.data.image_mp4_url);
+      downloadImg(res.data.image_mp4_url);
     })
+  });
+  
+  var g = schedule.scheduleJob('* 40 8 * * *', function(){
+      uploadImg();
   });
 }
 
@@ -80,35 +84,35 @@ function unique(value, index, self) {
   return self.indexOf(value) === index;
 }
 
-function postImg(img_url) {
-    var tasks = [{
-      title: 'Downloading',
-      task: async (ctx, task) => {
-        const url = img_url;
-        const path = Path.resolve(__dirname, 'images', 'imgpost.mp4')
-  
-        const response = await Axios({
-          method: 'GET',
-          url: url,
-          responseType: 'stream'
-        })
-  
-        response.data.pipe(fs.createWriteStream(path))
-  
-        return new Promise((resolve, reject) => {
-          response.data.on('end', () => {
-            resolve()
-          })
-  
-          response.data.on('error', err => {
-            reject(err)
-          })
-        })
-      }
-    }]
-  
+function downloadImg(img_url) {
+  var tasks = [{
+    title: 'Downloading',
+    task: async (ctx, task) => {
+      const url = img_url;
+      const path = Path.resolve(__dirname, 'images', 'imgpost.mp4')
 
-    new Listr(tasks).run().then(uploadImg());
+      const response = await Axios({
+        method: 'GET',
+        url: url,
+        responseType: 'stream'
+      })
+
+      response.data.pipe(fs.createWriteStream(path))
+
+      return new Promise((resolve, reject) => {
+        response.data.on('end', () => {
+          resolve()
+        })
+
+        response.data.on('error', err => {
+          reject(err)
+        })
+      })
+    }
+  }]
+
+
+  new Listr(tasks).run();
 };
 
 const splitFile = require('split-file')
@@ -116,7 +120,7 @@ const Twitter = require('twitter')
 const Promise = require('bluebird')
 
 function uploadImg() {
-  console.log("uploading")
+  console.log("Uploading")
   const pathToMovie = 'images/imgpost.mp4';
   const mediaType = 'video/mp4' // `'video/mp4'` is also supported
   
