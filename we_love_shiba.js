@@ -32,7 +32,7 @@ function start() {
     });
   });
   
-  var h = schedule.scheduleJob('* 35 9 * * *', function(){
+  var h = schedule.scheduleJob('* 40 8 * * *', function(){
     giphy.random(randomGif).then(function (res){
       console.log(res.data.image_mp4_url);
       postImg(res.data.image_mp4_url);
