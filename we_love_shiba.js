@@ -34,13 +34,14 @@ function start() {
 
   var h = schedule.scheduleJob('* 30 8 * * *', function(){
     giphy.random(randomGif).then(function (res){
-      console.log(res.data.image_mp4_url);
+      console.log("Téléchargement de cette video : " + res.data.image_mp4_url);
       downloadImg(res.data.image_mp4_url);
     })
   });
   
   var g = schedule.scheduleJob('* 40 8 * * *', function(){
-      uploadImg();
+      console.log("Execution de l'upload de l'image sur twitter")
+      //uploadImg();
   });
 }
 
@@ -119,6 +120,13 @@ const splitFile = require('split-file')
 const Twitter = require('twitter')
 const Promise = require('bluebird')
 
+const client = new Twitter({
+  consumer_key: process.env.CONSUMER_KEY,  
+  consumer_secret: process.env.CONSUMER_SECRET,
+  access_token_key: process.env.ACCESS_TOKEN,  
+  access_token_secret: process.env.ACCESS_TOKEN_SECRET
+});
+
 function uploadImg() {
   console.log("Uploading")
   const pathToMovie = 'images/imgpost.mp4';
@@ -136,14 +144,6 @@ function uploadImg() {
   .catch((err) => {
   console.log('Error: ', err)
   })
-
-  const client = new Twitter({
-    consumer_key: process.env.CONSUMER_KEY,  
-    consumer_secret: process.env.CONSUMER_SECRET,
-    access_token_key: process.env.ACCESS_TOKEN,  
-    access_token_secret: process.env.ACCESS_TOKEN_SECRET
-  });
-
 
   const init = () => {
     initTweetUpload(mediaSize, mediaType) // Declare that you wish to upload some media
