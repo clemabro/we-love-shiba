@@ -32,16 +32,24 @@ function start() {
     });
   });
 
-  var h = schedule.scheduleJob('* 30 8 * * *', function(){
+  var ruleDownload = new schedule.RecurrenceRule();
+  ruleDownload.hour = 8;
+  ruleDownload.minute = 20;
+
+  var h = schedule.scheduleJob(ruleDownload, function(){
     giphy.random(randomGif).then(function (res){
       console.log("Téléchargement de cette video : " + res.data.image_mp4_url);
       downloadImg(res.data.image_mp4_url);
     })
   });
   
-  var g = schedule.scheduleJob('* 40 8 * * *', function(){
+  var rule = new schedule.RecurrenceRule();
+  rule.hour = 8;
+  rule.minute = 30;
+  
+  var g = schedule.scheduleJob(rule, function(){
       console.log("Execution de l'upload de l'image sur twitter")
-      //uploadImg();
+      uploadImg();
   });
 }
 
@@ -113,7 +121,7 @@ function downloadImg(img_url) {
   }]
 
 
-  new Listr(tasks).run();
+  new Listr(tasks).run().then(tasks = null);
 };
 
 const splitFile = require('split-file')
@@ -159,8 +167,7 @@ function uploadImg() {
     }
 
     client.post('statuses/update', status, (error, tweet, response) => {
-      console.log(error)
-      console.log(tweet)
+      console.log("Tweet OK : " + tweet.created_at);
     })
   }).catch((err) => {
     console.log('Error: ', err)
