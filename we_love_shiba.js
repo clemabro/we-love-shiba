@@ -168,6 +168,7 @@ function uploadImg() {
 
     client.post('statuses/update', status, (error, tweet, response) => {
       console.log("Tweet OK : " + tweet.created_at);
+      console.log(tweet);
     })
   }).catch((err) => {
     console.log('Error: ', err)
