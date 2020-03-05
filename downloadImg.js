@@ -47,3 +47,7 @@ function downloadImg(img_url) {
 
   new Listr(tasks).run().then(tasks = null);
 };
+
+function getRandom(arr) {
+  return arr[ Math.floor(arr.length * Math.random()) ];
+}
