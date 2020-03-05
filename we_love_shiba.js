@@ -45,7 +45,7 @@ function start() {
   
   var rule = new schedule.RecurrenceRule();
   rule.hour = 8;
-  rule.minute = 30;
+  rule.minute = 35;
   
   var g = schedule.scheduleJob(rule, function(){
       console.log("Execution de l'upload de l'image sur twitter")
