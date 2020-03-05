@@ -8,6 +8,10 @@ const Path = require('path');
 const Listr = require('listr');
 const Axios = require('axios');
 
+const search_gif = ['shiba', 'shiba inu', 'shibas', 'shibe'];
+
+var randomGif = getRandom(search_gif);
+
 giphy.random(randomGif).then(function (res){
   console.log("Téléchargement de cette video : " + res.data.image_mp4_url);
   downloadImg(res.data.image_mp4_url);
