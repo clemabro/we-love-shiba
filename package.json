@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/clemabro/we-love-shiba#readme",
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "base64image-to-file": "^1.2.0",
     "gifshot": "^0.4.5",
     "giphy-api": "^2.0.1",
