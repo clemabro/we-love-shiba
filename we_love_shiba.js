@@ -28,7 +28,7 @@ function start() {
   
   var j = schedule.scheduleJob('*/30 * * * *', function(){
     findUserByTopic(randomList).then( function(value){
-      addToFollow(value);
+      //addToFollow(value);
     });
   });
 
